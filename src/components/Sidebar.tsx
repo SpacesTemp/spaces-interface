@@ -58,10 +58,40 @@ const Sidebar: React.FC<{}> = () => {
       unreadMsgCount: 4,
     },
   ];
+  const threads = [
+    {
+      name: "Rules Thread",
+      link: "/channel/1",
+    },
+    {
+      name: "Paid Thread 1",
+      link: "/channel/2",
+      unreadMsgCount: 9,
+    },
+  ];
   return (
     <Main>
       <Channels>
+        <h1> Chat Rooms </h1>
         {links.map(({ name, link, unreadMsgCount }) => {
+          return (
+            <li className={location.pathname === link ? "current" : ""}>
+              <CustomLink
+                to={link}
+                className={location.pathname === link ? "current" : ""}
+              >
+                {name}
+              </CustomLink>
+              {unreadMsgCount && unreadMsgCount > 0 && (
+                <UnreadCount>
+                  {unreadMsgCount > 10 ? "9+" : unreadMsgCount}
+                </UnreadCount>
+              )}
+            </li>
+          );
+        })}
+        <h1> Threads </h1>
+        {threads.map(({ name, link, unreadMsgCount }) => {
           return (
             <li className={location.pathname === link ? "current" : ""}>
               <CustomLink
