@@ -11,4 +11,7 @@ export default {
   green: "#00ff00",
   black: "#2a2a2a",
   white: "#ffffff",
+  shadowGrey: "#aaaaaa",
+  borderGrey: "#eeeeee",
+  postTextColor: "#3a3a3a",
 };

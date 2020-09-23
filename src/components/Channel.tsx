@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import dayjs from "dayjs";
 
+import Timestamp from "./Timestamp";
+
 const Main = styled.div`
   padding: 10px;
   background-color: ${({ theme }) => theme.colors.black};
@@ -38,11 +40,6 @@ const Chatbox = styled.div`
 
   .message {
     font-size: 16px;
-  }
-
-  .timestamp {
-    margin-left: 10px;
-    font-size: 12px;
   }
 `;
 
@@ -133,9 +130,7 @@ const Channel = () => {
               <Content>
                 <span className="name">
                   {chat.user}
-                  <span className="timestamp">
-                    {dayjs(chat.timestamp).format("hh:mm - DD/MMM/YYYY")}
-                  </span>
+                  <Timestamp timestamp={chat.timestamp} />
                 </span>
                 <span className="message">{chat.message}</span>
               </Content>

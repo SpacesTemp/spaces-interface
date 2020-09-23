@@ -5,6 +5,7 @@ import styled, { ThemeProvider } from "styled-components";
 import theme from "./theme";
 import Sidebar from "./components/Sidebar";
 import Channel from "./components/Channel";
+import Threads from "./components/Threads";
 import Topbar from "./components/Topbar";
 
 const Main = styled.main`
@@ -23,6 +24,7 @@ const App = () => {
           <Sidebar />
           <Switch>
             <Route path="/channel/:id" component={Channel} />
+            <Route path="/thread/:id" component={Threads} />
           </Switch>
         </Main>
       </Router>
