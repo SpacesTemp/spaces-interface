@@ -61,11 +61,11 @@ const Sidebar: React.FC<{}> = () => {
   const threads = [
     {
       name: "Rules Thread",
-      link: "/channel/1",
+      link: "/thread/1",
     },
     {
       name: "Paid Thread 1",
-      link: "/channel/2",
+      link: "/thread/2",
       unreadMsgCount: 9,
     },
   ];

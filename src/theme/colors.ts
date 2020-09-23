@@ -9,4 +9,6 @@ export default {
   primaryTextColor: "#fafafa",
   secondaryTextColor: "#fafafa",
   green: "#00ff00",
+  black: "#2a2a2a",
+  white: "#ffffff",
 };

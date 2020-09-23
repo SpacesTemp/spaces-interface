@@ -1,8 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 //delete later
-import Button from '@material-ui/core/Button';
-
+// import Button from '@material-ui/core/Button';
 
 const Main = styled.div`
   background-color: ${({ theme }) => theme.colors.primaryDarkColor};
@@ -39,7 +38,6 @@ const FundButton = styled.div`
   font-weight: bold;
   display: flex;
   align-items: center;
-
 `;
 
 const Topbar: React.FC<{}> = () => {
@@ -50,14 +48,13 @@ const Topbar: React.FC<{}> = () => {
         <div className="online" />
       </User>
       <FundButton>
-        <Button variant="outlined" >
+        {/* <Button variant="outlined" >
           Fork Community
       </Button>
       <Button variant="outlined" >
           Boost This Server!
-      </Button>
+      </Button> */}
       </FundButton>
-
     </Main>
   );
 };
