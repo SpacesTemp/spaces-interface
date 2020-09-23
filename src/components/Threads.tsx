@@ -4,6 +4,13 @@ import styled from "styled-components";
 
 import Timestamp from "./Timestamp";
 
+type Post = {
+  title: string;
+  content: string;
+  user: string;
+  timestamp: any;
+};
+
 const Main = styled.div`
   padding: 10px;
   flex: 1;
@@ -23,7 +30,7 @@ const FeaturedPosts = styled.fieldset`
   border: 1px solid ${({ theme }) => theme.colors.borderGrey};
 `;
 
-const Post = styled.div`
+const PostDiv = styled.div`
   width: 48%;
   border-radius: 8px;
   box-shadow: 0 0 4px ${({ theme }) => theme.colors.shadowGrey};
@@ -103,9 +110,9 @@ const Thread = () => {
       <h1>Thread {id}</h1>
       <FeaturedPosts>
         <legend>Featured Posts</legend>
-        {featuredPosts.map((post) => {
+        {state.featuredPosts.map((post: Post) => {
           return (
-            <Post className="featured">
+            <PostDiv className="featured">
               <h4>{post.title}</h4>
               <div className="content">{post.content}</div>
               <User>
@@ -113,21 +120,22 @@ const Thread = () => {
                 {post.user}
                 <Timestamp timestamp={post.timestamp} />
               </User>
-            </Post>
+            </PostDiv>
           );
         })}
       </FeaturedPosts>
 
-      {posts.map((post) => {
+      {state.posts.map((post: Post) => {
         return (
-          <Post>
+          <PostDiv>
             <h4>{post.title}</h4>
             <div className="content">{post.content}</div>
             <User>
+              <UserImage />
               {post.user}
               <Timestamp timestamp={post.timestamp} />
             </User>
-          </Post>
+          </PostDiv>
         );
       })}
     </Main>

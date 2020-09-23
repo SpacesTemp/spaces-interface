@@ -1,7 +1,6 @@
 import React, { useReducer } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import dayjs from "dayjs";
 
 import Timestamp from "./Timestamp";
 

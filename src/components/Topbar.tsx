@@ -7,6 +7,8 @@ const Main = styled.div`
   background-color: ${({ theme }) => theme.colors.primaryDarkColor};
   height: 40px;
   width: 100%;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const User = styled.div`
@@ -29,15 +31,20 @@ const User = styled.div`
 
 //rename, something like 'boost'
 const FundButton = styled.div`
-  width: 50%;
   padding: 10px;
-  margin-top: 0px;
-  margin-left: 1400px;
   color: ${({ theme }) => theme.colors.secondaryTextColor};
   background-color: ${({ theme }) => theme.colors.primaryDarkColor};
   font-weight: bold;
   display: flex;
   align-items: center;
+
+  button {
+    border: 1px solid ${({ theme }) => theme.colors.borderGrey};
+    color: ${({ theme }) => theme.colors.white};
+    padding: 10px;
+    background-color: transparent;
+    margin: 0 10px;
+  }
 `;
 
 const Topbar: React.FC<{}> = () => {
@@ -48,12 +55,8 @@ const Topbar: React.FC<{}> = () => {
         <div className="online" />
       </User>
       <FundButton>
-        {/* <Button variant="outlined" >
-          Fork Community
-      </Button>
-      <Button variant="outlined" >
-          Boost This Server!
-      </Button> */}
+        <button>Fork Community</button>
+        <button>Boost This Server!</button>
       </FundButton>
     </Main>
   );
