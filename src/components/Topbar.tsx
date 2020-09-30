@@ -55,7 +55,7 @@ const Topbar: React.FC<{}> = () => {
         <div className="online" />
       </User>
       <FundButton>
-        <button>Fork Community</button>
+        <button onClick={()=>{console.log("Test")}} >Fork Community</button>
         <button>Boost This Server!</button>
       </FundButton>
     </Main>
