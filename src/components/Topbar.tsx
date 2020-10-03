@@ -7,8 +7,8 @@ import Modal from '@material-ui/core/Modal';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
 
-// import PushArtifact from "./contracts/Push.json"
-// import contractAddress from "./contracts/contract-address.json"
+import DonateArtifact from "../contracts/Donate.json"
+import contractAddress from "../contracts/contract-address.json"
 
 const BUIDLER_EVM_NETWORK_ID = '31337'
 const ERROR_CODE_TX_REJECTED_BY_USER = 4001
@@ -176,7 +176,7 @@ const Topbar: React.FC<{}> = () => {
     </div>
       </p>
       <FundButton>
-        <button> Submit! </button>
+        <button onClick={()=>{sendDonation()}}> Submit! </button>
       </FundButton>
     </div>
   );
@@ -199,12 +199,13 @@ const Topbar: React.FC<{}> = () => {
   async function initializeEthers() {
     const provider3 = new ethers.providers.Web3Provider(window.ethereum)
     setProvider(provider3)
-    // const tokenTemp = new ethers.Contract(
-    //     contractAddress.push,
-    //     PushArtifact.abi,
-    //     provider3.getSigner(0)
-    // )
-    // setTokenData(tokenTemp)
+    console.log(provider3)
+    const donateInterface = new ethers.Contract(
+        contractAddress.donate,
+        DonateArtifact.abi,
+        provider3.getSigner(0)
+    )
+    setTokenData(donateInterface)
   }
 
   async function checkNetwork() {
@@ -216,12 +217,19 @@ const Topbar: React.FC<{}> = () => {
   }
 
 
-  // if (!Addr) {
-  // //<Button variant="contained" color="primary" onClick={() => connectWallet()} > Connect Wallet</Button>
-  // return <div>
-  //       <h1> Connect dat wallet</h1>
-  //   </div>
-  // }
+  async function sendDonation(){
+    console.log("addr:", Addr[0])
+    console.log("Contract addr:", contractAddress.donate)
+    const params = [{
+      from: Addr[0],//provider address
+      to: contractAddress.donate, //token address
+      value: ethers.utils.parseUnits(value.toString(), 'ether').toHexString()
+  }];
+
+  const transactionHash = await provider.send('eth_sendTransaction', params)
+  console.log('transactionHash is ' + transactionHash);
+
+  }
 
   return (
     
