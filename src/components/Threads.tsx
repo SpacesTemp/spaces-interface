@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useState, useReducer } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
@@ -12,13 +12,16 @@ type Post = {
 };
 
 const Main = styled.div`
+  position: relative;
   padding: 10px;
   flex: 1;
-  height: 100%;
+  height: calc(100% - 40px);
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   overflow: auto;
+  align-items: flex-start;
+  align-content: flex-start;
 
   & > h1 {
     margin-top: 0;
@@ -31,7 +34,7 @@ const FeaturedPosts = styled.fieldset`
 `;
 
 const PostDiv = styled.div`
-  width: 48%;
+  width: 47%;
   border-radius: 8px;
   box-shadow: 0 0 4px ${({ theme }) => theme.colors.shadowGrey};
   padding: 10px;
@@ -53,7 +56,7 @@ const PostDiv = styled.div`
   }
 
   &.featured {
-    width: 100%;
+    width: 97%;
   }
 `;
 
@@ -71,7 +74,72 @@ const UserImage = styled.div`
   margin-right: 5px;
 `;
 
+const AddPost = styled.div`
+  border: 1px solid ${({ theme }) => theme.colors.black};
+  position: absolute;
+  top: 20px;
+  right: 10px;
+  padding: 10px 20px;
+`;
+
+const Modal = styled.div`
+  position: fixed;
+  display: flex;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: ${({ theme }) => theme.colors.modalBackground};
+`;
+
+const Close = styled.div`
+  position: absolute;
+  right: 10px;
+  top: 10px;
+`;
+
+const ModalBody = styled.div`
+  height: 80%;
+  width: 80%;
+  margin: auto;
+  position: relative;
+  background-color: ${({ theme }) => theme.colors.white};
+`;
+
+const PostForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+
+  input, textarea {
+    width: 100%;
+    border: 1px solid ${({ theme }) => theme.colors.borderGrey};
+    border-radius: 4px;
+    padding: 8px;
+    margin: 8px 0;
+  }
+
+  label {
+    margin: 16px 0 0;
+  }
+
+  button {
+    margin: 8px auto;
+    border-radius: 8px;
+    text-align: center;
+    padding: 15px 60px;
+    background-color: ${({ theme }) => theme.colors.white};
+  }
+`;
+
 const postsReducer = (state: any, action: any) => {
+  const newState = { ...state };
+  switch (action.type) {
+    case 'ADD_POST':
+      newState.posts.push(action.post);
+      return newState;
+  }
+
   return state;
 };
 
@@ -103,31 +171,61 @@ const Thread = () => {
     },
   ];
 
+  let isPaid = false;
+  if (id == 2) {
+    isPaid = true;
+  }
+
   const [state, dispatch] = useReducer(postsReducer, { posts, featuredPosts });
+  const [showPostModal, togglePostModal] = useState(false);
+
+  const submitPost = (event: React.FormEvent) => {
+    event.preventDefault();
+    const { postTitle, content } = (event.target as HTMLFormElement);
+    dispatch({
+      type: 'ADD_POST',
+      post: {
+        title: (postTitle as HTMLInputElement).value,
+        content: (content as HTMLTextAreaElement).value,
+        user: 'User2',
+        timestamp: Date.now(),
+      }
+    });
+    (event.target as HTMLFormElement).reset();
+    togglePostModal(false);
+  }
+
+  console.log(state);
 
   return (
     <Main>
       <h1>Thread {id}</h1>
-      <FeaturedPosts>
-        <legend>Featured Posts</legend>
-        {state.featuredPosts.map((post: Post) => {
-          return (
-            <PostDiv className="featured">
-              <h4>{post.title}</h4>
-              <div className="content">{post.content}</div>
-              <User>
-                <UserImage />
-                {post.user}
-                <Timestamp timestamp={post.timestamp} />
-              </User>
-            </PostDiv>
-          );
-        })}
-      </FeaturedPosts>
+      <AddPost onClick={() => togglePostModal(!showPostModal)}>
+        Add Post
+      </AddPost>
+      {
+        !isPaid &&
+        <FeaturedPosts>
+          <legend>Featured Posts</legend>
+          {state.featuredPosts.map((post: Post, index: number) => {
+            return (
+              <PostDiv className="featured" key={index}>
+                <h4>{post.title}</h4>
+                <div className="content">{post.content}</div>
+                <User>
+                  <UserImage />
+                  {post.user}
+                  <Timestamp timestamp={post.timestamp} />
+                </User>
+              </PostDiv>
+            );
+          })}
+        </FeaturedPosts>
+      }
 
-      {state.posts.map((post: Post) => {
+      {state.posts.map((post: Post, index: number) => {
         return (
-          <PostDiv>
+          <PostDiv key={index}>
             <h4>{post.title}</h4>
             <div className="content">{post.content}</div>
             <User>
@@ -138,6 +236,27 @@ const Thread = () => {
           </PostDiv>
         );
       })}
+
+      {showPostModal && (
+        <Modal>
+          <ModalBody>
+            <Close onClick={() => togglePostModal(!showPostModal)}>Close</Close>
+            <PostForm onSubmit={submitPost}>
+              <h3>Add a post</h3>
+
+              <label htmlFor="postTitle">Title:</label>
+              <input name="postTitle" type="text" />
+
+              <label htmlFor="content">Content:</label>
+              <textarea name="content" rows={30} />
+              {
+                isPaid && <input name="donation" type="range" />
+              }
+              <button type="submit">Submit</button>
+            </PostForm>
+          </ModalBody>
+        </Modal>
+      )}
     </Main>
   );
 };

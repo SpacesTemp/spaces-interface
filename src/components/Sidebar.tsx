@@ -75,7 +75,7 @@ const Sidebar: React.FC<{}> = () => {
         <h1> Chat Rooms </h1>
         {links.map(({ name, link, unreadMsgCount }) => {
           return (
-            <li className={location.pathname === link ? "current" : ""}>
+            <li key={link} className={location.pathname === link ? "current" : ""}>
               <CustomLink
                 to={link}
                 className={location.pathname === link ? "current" : ""}
@@ -93,7 +93,7 @@ const Sidebar: React.FC<{}> = () => {
         <h1> Threads </h1>
         {threads.map(({ name, link, unreadMsgCount }) => {
           return (
-            <li className={location.pathname === link ? "current" : ""}>
+            <li key={link} className={location.pathname === link ? "current" : ""}>
               <CustomLink
                 to={link}
                 className={location.pathname === link ? "current" : ""}
