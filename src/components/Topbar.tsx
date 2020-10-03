@@ -150,33 +150,32 @@ const Topbar: React.FC<{}> = () => {
 
   const handleSliderChange = (event: any, newValue: any) => {
     setValue(newValue);
-    console.log(newValue)
   };
 
   const body = (
     <div style={modalStyle} className={classes.paper}>
       <h2 id="simple-modal-title">Fund this server!</h2>
       <p id="simple-modal-description">
-      <div className={classesSlider.root}>
-      <Typography id="discrete-slider" gutterBottom>
-        Donation Value Ξ:
+        <div className={classesSlider.root}>
+          <Typography id="discrete-slider" gutterBottom>
+            Donation Value Ξ:
       </Typography>
-      <Slider
-        defaultValue={0.5}
-        onChange={handleSliderChange}
-        getAriaValueText={valuetext}
-        aria-labelledby="discrete-slider"
-        valueLabelDisplay="on"
-        step={0.1}
-        marks
-        min={0.00}
-        max={2}
-        
-      />
-    </div>
+          <Slider
+            defaultValue={0.5}
+            onChange={handleSliderChange}
+            getAriaValueText={valuetext}
+            aria-labelledby="discrete-slider"
+            valueLabelDisplay="on"
+            step={0.1}
+            marks
+            min={0.00}
+            max={2}
+
+          />
+        </div>
       </p>
       <FundButton>
-        <button onClick={()=>{sendDonation()}}> Submit! </button>
+        <button onClick={() => { sendDonation() }}> Submit! </button>
       </FundButton>
     </div>
   );
@@ -201,9 +200,9 @@ const Topbar: React.FC<{}> = () => {
     setProvider(provider3)
     console.log(provider3)
     const donateInterface = new ethers.Contract(
-        contractAddress.donate,
-        DonateArtifact.abi,
-        provider3.getSigner(0)
+      contractAddress.donate,
+      DonateArtifact.abi,
+      provider3.getSigner(0)
     )
     setTokenData(donateInterface)
   }
@@ -217,42 +216,42 @@ const Topbar: React.FC<{}> = () => {
   }
 
 
-  async function sendDonation(){
+  async function sendDonation() {
     console.log("addr:", Addr[0])
     console.log("Contract addr:", contractAddress.donate)
     const params = [{
       from: Addr[0],//provider address
       to: contractAddress.donate, //token address
       value: ethers.utils.parseUnits(value.toString(), 'ether').toHexString()
-  }];
+    }];
 
-  const transactionHash = await provider.send('eth_sendTransaction', params)
-  console.log('transactionHash is ' + transactionHash);
+    const transactionHash = await provider.send('eth_sendTransaction', params)
+    console.log('transactionHash is ' + transactionHash);
 
   }
 
   return (
-    
-      <Main>
-        <User>
-          <span className="name">Jane Doe</span>
-          <div className="online" />
-        </User>
-        <FundButton>
-          <button onClick={() => { console.log("Test") }} >Fork Community</button>
-          {Addr ? <button onClick={handleOpen} >Boost This Server!</button> : <button onClick={() => connectWallet()} > Connect Wallet</button>}
-        </FundButton>
-        <Modal
+
+    <Main>
+      <User>
+        <span className="name">Jane Doe</span>
+        <div className="online" />
+      </User>
+      <FundButton>
+        <button onClick={() => { console.log("Test") }} >Fork Community</button>
+        {Addr ? <button onClick={handleOpen} >Boost This Server!</button> : <button onClick={() => connectWallet()} > Connect Wallet</button>}
+      </FundButton>
+      <Modal
         open={open}
         onClose={handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
+        aria-labelledby="Boost server"
+        aria-describedby="Donate ETH to the server"
       >
         {body}
       </Modal>
-      </Main>
+    </Main>
 
-    
+
   );
 };
 

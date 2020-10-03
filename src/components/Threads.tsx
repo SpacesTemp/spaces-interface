@@ -1,6 +1,7 @@
 import React, { useState, useReducer } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import Slider from '@material-ui/core/Slider';
 
 import Timestamp from "./Timestamp";
 
@@ -104,6 +105,7 @@ const ModalBody = styled.div`
   margin: auto;
   position: relative;
   background-color: ${({ theme }) => theme.colors.white};
+  border-radius: 4px;
 `;
 
 const PostForm = styled.form`
@@ -182,6 +184,10 @@ const Thread = () => {
   const submitPost = (event: React.FormEvent) => {
     event.preventDefault();
     const { postTitle, content } = (event.target as HTMLFormElement);
+    if (!postTitle.value || !content.value) {
+      return;
+    }
+
     dispatch({
       type: 'ADD_POST',
       post: {
@@ -248,9 +254,18 @@ const Thread = () => {
               <input name="postTitle" type="text" />
 
               <label htmlFor="content">Content:</label>
-              <textarea name="content" rows={30} />
+              <textarea name="content" rows={10} />
               {
-                isPaid && <input name="donation" type="range" />
+                isPaid && <Slider
+                  defaultValue={0.5}
+                  aria-labelledby="Donation"
+                  valueLabelDisplay="on"
+                  step={0.1}
+                  marks
+                  min={0.00}
+                  max={2}
+                  name="donation"
+                />
               }
               <button type="submit">Submit</button>
             </PostForm>
