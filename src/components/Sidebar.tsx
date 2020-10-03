@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Link, useLocation } from "react-router-dom";
 
 const Main = styled.div`
-  height: 100%;
+  height: calc(100% - 40px);
   width: 20%;
   background-color: ${({ theme }) => theme.colors.primaryColor};
 `;
