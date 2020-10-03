@@ -14,4 +14,5 @@ export default {
   shadowGrey: "#aaaaaa",
   borderGrey: "#eeeeee",
   postTextColor: "#3a3a3a",
+  modalBackground: "rgba(0, 0, 0, 0.8)",
 };

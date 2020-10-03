@@ -8,7 +8,7 @@ const Main = styled.div`
   padding: 10px;
   background-color: ${({ theme }) => theme.colors.black};
   flex: 1;
-  height: 100%;
+  height: calc(100% - 40px);
 
   & > h1 {
     color: ${({ theme }) => theme.colors.primaryTextColor};

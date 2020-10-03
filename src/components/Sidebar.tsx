@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Link, useLocation } from "react-router-dom";
 
 const Main = styled.div`
-  height: 100%;
+  height: calc(100% - 40px);
   width: 20%;
   background-color: ${({ theme }) => theme.colors.primaryColor};
 `;
@@ -75,7 +75,7 @@ const Sidebar: React.FC<{}> = () => {
         <h1> Chat Rooms </h1>
         {links.map(({ name, link, unreadMsgCount }) => {
           return (
-            <li className={location.pathname === link ? "current" : ""}>
+            <li key={link} className={location.pathname === link ? "current" : ""}>
               <CustomLink
                 to={link}
                 className={location.pathname === link ? "current" : ""}
@@ -93,7 +93,7 @@ const Sidebar: React.FC<{}> = () => {
         <h1> Threads </h1>
         {threads.map(({ name, link, unreadMsgCount }) => {
           return (
-            <li className={location.pathname === link ? "current" : ""}>
+            <li key={link} className={location.pathname === link ? "current" : ""}>
               <CustomLink
                 to={link}
                 className={location.pathname === link ? "current" : ""}
