@@ -24,7 +24,7 @@ const Main = styled.div`
 const User = styled.div`
   width: 20%;
   padding: 10px;
-  color: ${({ theme }) => theme.colors.secondaryTextColor};
+  color: ${({ theme }) => theme.colors.primaryTextColor};
   background-color: ${({ theme }) => theme.colors.primaryDarkColor};
   font-weight: bold;
   display: flex;

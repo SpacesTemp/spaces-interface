@@ -17,12 +17,16 @@ const Channels = styled.ul`
     align-items: center;
     justify-content: space-between;
   }
+
+  h1 {
+    color: ${({ theme }) => theme.colors.primaryTextColor};
+  }
 `;
 
 const CustomLink = styled(Link)`
   text-decoration: none;
   margin: 5px 0;
-  color: ${({ theme }) => theme.colors.secondaryTextColor};
+  color: ${({ theme }) => theme.colors.primaryTextColor};
   font-weight: normal;
 
   &.current {
