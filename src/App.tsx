@@ -51,12 +51,14 @@ const Main = styled.main`
 
 export const DataContext = React.createContext({
   data: mockData,
-  openEditor: (isReply: boolean, parentId: number, threadId: number) => { }
+  openPostEditor: (isReply: boolean, parentId: number, threadId: number) => { },
+  openThreadEditor: () => { },
 });
 
 const initialState = {
   threads: mockData.threads,
   showPostEditor: false,
+  showThreadEditor: false,
   editorMeta: {
     isReply: false,
     parentId: null,
@@ -120,6 +122,18 @@ const appReducer = (state: any, action: any) => {
         ...state,
         ...newState,
       }
+    case 'SHOW_THREAD_EDITOR': {
+      return {
+        ...state,
+        showThreadEditor: true,
+      };
+    }
+    case 'HIDE_THREAD_EDITOR': {
+      return {
+        ...state,
+        showThreadEditor: false,
+      };
+    }
     default:
       return state;
   }
@@ -128,7 +142,7 @@ const appReducer = (state: any, action: any) => {
 const App = () => {
   const [state, dispatch] = useReducer(appReducer, initialState);
 
-  const openEditor = (isReply: boolean, parentId: number, threadId: number) => {
+  const openPostEditor = (isReply: boolean, parentId: number, threadId: number) => {
     dispatch({
       type: 'SHOW_EDITOR',
       isReply,
@@ -137,8 +151,14 @@ const App = () => {
     });
   }
 
+  const openThreadEditor = () => {
+    dispatch({
+      type: 'SHOW_THREAD_EDITOR',
+    });
+  }
+
   return (
-    <DataContext.Provider value={{ data: state, openEditor }}>
+    <DataContext.Provider value={{ data: state, openPostEditor, openThreadEditor }}>
       <ThemeProvider theme={theme}>
         <Router>
           <Main>

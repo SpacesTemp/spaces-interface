@@ -51,6 +51,15 @@ const UnreadCount = styled.div`
   font-size: 14px;
 `;
 
+const AddThread = styled.button`
+  width: 90%;
+  margin: 30px auto;
+  padding: 10px;
+  border: 1px solid ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.white};
+  background: none;
+`;
+
 const Sidebar: React.FC<{}> = () => {
   const location = useLocation();
   const links = [
@@ -68,6 +77,7 @@ const Sidebar: React.FC<{}> = () => {
   const dataContext = useContext(DataContext);
   console.log(dataContext.data);
   const threads = dataContext.data.threads;
+  const { openThreadEditor } = dataContext;
 
   return (
     <Main>
@@ -103,6 +113,7 @@ const Sidebar: React.FC<{}> = () => {
             </li>
           );
         })}
+        <AddThread onClick={() => openThreadEditor()}>+ Add a Thread</AddThread>
       </Channels>
     </Main>
   );
