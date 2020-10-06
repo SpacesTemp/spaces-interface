@@ -1,0 +1,47 @@
+{
+  "threads": [
+    {
+      "id": 1,
+      "name": "Introduction",
+      "isPaid": false,
+      "payAmount": 0.0,
+      "posts": [
+        {
+          "title": "Welcome to the Community",
+          "content": "This is a community of all the like minded people. By like minded we don't mean that are brains are of the same, shape and size or identical in any other way. It just means that the majority of the members of this community may think alike and share similar opinions about life.",
+          "user": "Admin",
+          "timestamp": 1600342039783,
+          "replies": [
+            2,
+            3
+          ]
+        },
+        {
+          "id": 2,
+          "content": "Glad to be a part of this community",
+          "user": "User1",
+          "timestamp": 1600342939783,
+          "replies": [
+            4
+          ]
+        },
+        {
+          "id": 3,
+          "title": "Happy to be hear",
+          "content": "I am happy to be a part of this community. Thanks.",
+          "user": "User2",
+          "timestamp": 1600342939783,
+          "replies": []
+        },
+        {
+          "id": 4,
+          "content": "Welcome",
+          "user": "User1",
+          "timestamp": 1600362939783,
+          "replies": []
+        }
+      ]
+    }
+  ],
+  "nextId": 5
+}
