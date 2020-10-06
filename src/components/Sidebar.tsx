@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
+
+import { DataContext } from '../App';
 
 const Main = styled.div`
   height: calc(100% - 40px);
@@ -62,17 +64,11 @@ const Sidebar: React.FC<{}> = () => {
       unreadMsgCount: 4,
     },
   ];
-  const threads = [
-    {
-      name: "Rules Thread",
-      link: "/thread/1",
-    },
-    {
-      name: "Paid Thread 1",
-      link: "/thread/2",
-      unreadMsgCount: 9,
-    },
-  ];
+  const { id: threadId } = useParams<{ id: any }>();
+  const dataContext = useContext(DataContext);
+  console.log(dataContext.data);
+  const threads = dataContext.data.threads;
+
   return (
     <Main>
       <Channels>
@@ -95,20 +91,15 @@ const Sidebar: React.FC<{}> = () => {
           );
         })}
         <h1> Threads </h1>
-        {threads.map(({ name, link, unreadMsgCount }) => {
+        {threads.map(({ name, id }) => {
           return (
-            <li key={link} className={location.pathname === link ? "current" : ""}>
+            <li key={id} className={threadId == id ? "current" : ""}>
               <CustomLink
-                to={link}
-                className={location.pathname === link ? "current" : ""}
+                to={`/thread/${id}`}
+                className={threadId == id ? "current" : ""}
               >
                 {name}
               </CustomLink>
-              {unreadMsgCount && unreadMsgCount > 0 && (
-                <UnreadCount>
-                  {unreadMsgCount > 10 ? "9+" : unreadMsgCount}
-                </UnreadCount>
-              )}
             </li>
           );
         })}

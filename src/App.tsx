@@ -49,7 +49,7 @@ const Main = styled.main`
   flex-wrap: wrap;
 `;
 
-const DataContext = React.createContext({
+export const DataContext = React.createContext({
   data: mockData,
   openEditor: (isReply: boolean, parentId: number, threadId: number) => { }
 });
@@ -138,7 +138,7 @@ const App = () => {
   }
 
   return (
-    <DataContext.Provider value={{ data: state.threads, openEditor }}>
+    <DataContext.Provider value={{ data: state, openEditor }}>
       <ThemeProvider theme={theme}>
         <Router>
           <Main>
