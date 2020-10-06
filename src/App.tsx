@@ -8,6 +8,7 @@ import Channel from "./components/Channel";
 import Threads from "./components/Threads";
 import Topbar from "./components/Topbar";
 import AddPost from './components/AddPost';
+import AddThread from './components/AddThread';
 import mockData from './mockData/threads.json';
 
 type Post = {
@@ -169,7 +170,10 @@ const App = () => {
               <Route path="/thread/:id" component={Threads} />
             </Switch>
           </Main>
-          <AddPost open={state.showPostEditor} onClose={() => dispatch({ type: 'HIDE_EDITOR' })} onSubmit={() => { }} />
+          <AddPost open={state.showPostEditor} onClose={() => dispatch({ type: 'HIDE_EDITOR' })} />
+          {
+            state.showThreadEditor && <AddThread open={state.showThreadEditor} onClose={() => dispatch({ type: 'HIDE_THREAD_EDITOR' })} />
+          }
         </Router>
       </ThemeProvider>
     </DataContext.Provider>

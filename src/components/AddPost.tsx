@@ -1,8 +1,23 @@
 import React from 'react';
 import styled from 'styled-components';
-import Slider from '@material-ui/core/Slider';
+import TextField from '@material-ui/core/TextField';
+import { makeStyles } from '@material-ui/styles';
 
 import Modal from './Modal';
+
+const useStyles = makeStyles({
+  textRoot: {
+    width: '100%',
+  },
+  checkboxRoot: {
+    width: '100%',
+    flexDirection: 'row',
+    margin: 0,
+  },
+  sliderRoot: {
+    marginTop: 40,
+  }
+});
 
 const PostForm = styled.form`
   display: flex;
@@ -30,31 +45,24 @@ const PostForm = styled.form`
   }
 `;
 
-const AddPost: React.FC<{ open: boolean, onClose: () => void, onSubmit: () => void }> = ({ open, onClose, onSubmit }) => {
+const AddPost: React.FC<{ open: boolean, onClose: () => void }> = ({ open, onClose }) => {
+  const classes = useStyles();
   if (!open) {
     return null;
   }
 
+  const submitHandler = () => {
+
+  }
+
   return (
     <Modal onClose={onClose} open={open}>
-      <PostForm onSubmit={onSubmit}>
+      <PostForm onSubmit={submitHandler}>
         <h3>Add a post</h3>
 
-        <label htmlFor="postTitle">Title:</label>
-        <input name="postTitle" type="text" />
+        <TextField className={classes.textRoot} name="title" label="Title" variant="outlined" />
+        <TextField className={classes.textRoot} name="content" multiline rows={10} label="Content" variant="outlined" />
 
-        <label htmlFor="content">Content:</label>
-        <textarea name="content" rows={10} />
-        <Slider
-          defaultValue={0.5}
-          aria-labelledby="Donation"
-          valueLabelDisplay="on"
-          step={0.1}
-          marks
-          min={0.00}
-          max={2}
-          name="donation"
-        />
         <button type="submit">Submit</button>
       </PostForm>
     </Modal>
