@@ -2,30 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Slider from '@material-ui/core/Slider';
 
-const Modal = styled.div`
-  position: fixed;
-  display: flex;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  background-color: ${({ theme }) => theme.colors.modalBackground};
-`;
-
-const Close = styled.div`
-  position: absolute;
-  right: 10px;
-  top: 10px;
-`;
-
-const ModalBody = styled.div`
-  height: 80%;
-  width: 80%;
-  margin: auto;
-  position: relative;
-  background-color: ${({ theme }) => theme.colors.white};
-  border-radius: 4px;
-`;
+import Modal from './Modal';
 
 const PostForm = styled.form`
   display: flex;
@@ -59,30 +36,27 @@ const AddPost: React.FC<{ open: boolean, onClose: () => void, onSubmit: () => vo
   }
 
   return (
-    <Modal>
-      <ModalBody>
-        <Close onClick={onClose}>Close</Close>
-        <PostForm onSubmit={onSubmit}>
-          <h3>Add a post</h3>
+    <Modal onClose={onClose} open={open}>
+      <PostForm onSubmit={onSubmit}>
+        <h3>Add a post</h3>
 
-          <label htmlFor="postTitle">Title:</label>
-          <input name="postTitle" type="text" />
+        <label htmlFor="postTitle">Title:</label>
+        <input name="postTitle" type="text" />
 
-          <label htmlFor="content">Content:</label>
-          <textarea name="content" rows={10} />
-          <Slider
-            defaultValue={0.5}
-            aria-labelledby="Donation"
-            valueLabelDisplay="on"
-            step={0.1}
-            marks
-            min={0.00}
-            max={2}
-            name="donation"
-          />
-          <button type="submit">Submit</button>
-        </PostForm>
-      </ModalBody>
+        <label htmlFor="content">Content:</label>
+        <textarea name="content" rows={10} />
+        <Slider
+          defaultValue={0.5}
+          aria-labelledby="Donation"
+          valueLabelDisplay="on"
+          step={0.1}
+          marks
+          min={0.00}
+          max={2}
+          name="donation"
+        />
+        <button type="submit">Submit</button>
+      </PostForm>
     </Modal>
   );
 }
