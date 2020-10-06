@@ -75,7 +75,6 @@ const Sidebar: React.FC<{}> = () => {
   ];
   const { id: threadId } = useParams<{ id: any }>();
   const dataContext = useContext(DataContext);
-  console.log(dataContext.data);
   const threads = dataContext.data.threads;
   const { openThreadEditor } = dataContext;
 
@@ -101,14 +100,14 @@ const Sidebar: React.FC<{}> = () => {
           );
         })}
         <h1> Threads </h1>
-        {threads.map(({ name, id }) => {
+        {threads.map(({ name, id, isPaid }) => {
           return (
             <li key={id} className={threadId == id ? "current" : ""}>
               <CustomLink
                 to={`/thread/${id}`}
                 className={threadId == id ? "current" : ""}
               >
-                {name}
+                {name} {isPaid ? '🔥' : ''}
               </CustomLink>
             </li>
           );

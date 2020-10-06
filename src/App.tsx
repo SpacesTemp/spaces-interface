@@ -19,12 +19,10 @@ type Post = {
   replies: Array<number>
 }
 
-type Thread = {
-  id: number,
+export type Thread = {
   name: string,
   isPaid: boolean,
   payAmount: number,
-  posts: Array<Post>,
 }
 
 interface State {
@@ -158,6 +156,16 @@ const App = () => {
     });
   }
 
+  const addThread = (thread: Thread) => {
+    dispatch({
+      type: 'ADD_THREAD',
+      ...thread,
+    });
+    dispatch({
+      type: 'HIDE_THREAD_EDITOR',
+    });
+  }
+
   return (
     <DataContext.Provider value={{ data: state, openPostEditor, openThreadEditor }}>
       <ThemeProvider theme={theme}>
@@ -172,7 +180,7 @@ const App = () => {
           </Main>
           <AddPost open={state.showPostEditor} onClose={() => dispatch({ type: 'HIDE_EDITOR' })} />
           {
-            state.showThreadEditor && <AddThread open={state.showThreadEditor} onClose={() => dispatch({ type: 'HIDE_THREAD_EDITOR' })} />
+            state.showThreadEditor && <AddThread open={state.showThreadEditor} onClose={() => dispatch({ type: 'HIDE_THREAD_EDITOR' })} onSubmit={addThread} />
           }
         </Router>
       </ThemeProvider>

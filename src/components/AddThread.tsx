@@ -6,6 +6,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/styles';
 
+import { Thread } from '../App';
 import Modal from './Modal';
 
 const useStyles = makeStyles({
@@ -20,7 +21,7 @@ const useStyles = makeStyles({
   sliderRoot: {
     marginTop: 40,
   }
-})
+});
 
 const ThreadForm = styled.form`
   display: flex;
@@ -36,7 +37,7 @@ const ThreadForm = styled.form`
   }
 `;
 
-const AddThread: React.FC<{ open: boolean, onClose: () => void }> = ({ open, onClose }) => {
+const AddThread: React.FC<{ open: boolean, onClose: () => void, onSubmit: (thread: Thread) => void }> = ({ open, onClose, onSubmit }) => {
   const [showSlider, setShowSlider] = useState(false);
   const classes = useStyles();
   if (!open) {
@@ -48,8 +49,16 @@ const AddThread: React.FC<{ open: boolean, onClose: () => void }> = ({ open, onC
     setShowSlider((target as HTMLInputElement).checked);
   }
 
-  const submitHandler = () => {
+  const submitHandler = (event: any) => {
+    event.preventDefault();
+    const { target } = event;
+    const { name, paid: isPaid, payAmount } = target as any;
 
+    onSubmit({
+      name: (name as HTMLInputElement).value,
+      isPaid: isPaid && isPaid.checked,
+      payAmount: payAmount && parseFloat((payAmount as HTMLInputElement).value),
+    });
   }
 
   return (
@@ -79,7 +88,7 @@ const AddThread: React.FC<{ open: boolean, onClose: () => void }> = ({ open, onC
             marks
             min={0.00}
             max={2}
-            name="donation"
+            name="payAmount"
             className={classes.sliderRoot}
           />
         }
