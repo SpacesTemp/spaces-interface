@@ -62,7 +62,7 @@ const initialState = {
     parentId: null,
     threadId: null,
   },
-  nextAvailableId: mockData.nextId,
+  nextThreadId: mockData.nextThreadId,
 };
 
 const appReducer = (state: any, action: any) => {
@@ -76,9 +76,53 @@ const appReducer = (state: any, action: any) => {
           parentId: action.parentId,
           threadId: action.threadId,
         }
+      };
+    case 'HIDE_EDITOR':
+      return {
+        ...state,
+        showPostEditor: false,
+        editorMeta: {
+          isReply: null,
+          parentId: null,
+          threadId: null,
+        }
+      };
+    case 'ADD_POST':
+      const { post } = action;
+      const newThreads = [...state.threads];
+      const currentThread = newThreads[state.threadId - 1];
+      currentThread.posts.push({
+        id: currentThread.nextPostId,
+        ...post,
+      });
+
+      currentThread.posts[state.parentId].replies.push(currentThread.nextPostId);
+      currentThread.nextPostId++;
+
+      return {
+        ...state,
+        threads: newThreads,
+      };
+    case 'ADD_THREAD':
+      const newState = { ...state };
+      const newThreadState = [...state.threads];
+      newThreadState.push({
+        "id": state.nextThreadId,
+        "name": action.name,
+        "isPaid": action.isPaid,
+        "payAmount": action.payAmount,
+        "posts": [],
+      });
+
+      newState.nextThreadId++;
+      newState.threads = [...newThreadState];
+      return {
+        ...state,
+        ...newState,
       }
+    default:
+      return state;
   }
-  return state;
 }
 
 const App = () => {

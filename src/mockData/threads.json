@@ -7,6 +7,7 @@
       "payAmount": 0.0,
       "posts": [
         {
+          "id": 1,
           "title": "Welcome to the Community",
           "content": "This is a community of all the like minded people. By like minded we don't mean that are brains are of the same, shape and size or identical in any other way. It just means that the majority of the members of this community may think alike and share similar opinions about life.",
           "user": "Admin",
@@ -40,8 +41,9 @@
           "timestamp": 1600362939783,
           "replies": []
         }
-      ]
+      ],
+      "nextPostId": 5
     }
   ],
-  "nextId": 5
+  "nextThreadId": 2
 }
