@@ -6,7 +6,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/styles';
 
-import { Thread } from '../App';
+import { ThreadInput } from '../App';
 import Modal from './Modal';
 
 const useStyles = makeStyles({
@@ -37,7 +37,7 @@ const ThreadForm = styled.form`
   }
 `;
 
-const AddThread: React.FC<{ open: boolean, onClose: () => void, onSubmit: (thread: Thread) => void }> = ({ open, onClose, onSubmit }) => {
+const AddThread: React.FC<{ open: boolean, onClose: () => void, onSubmit: (thread: ThreadInput) => void }> = ({ open, onClose, onSubmit }) => {
   const [showSlider, setShowSlider] = useState(false);
   const classes = useStyles();
   if (!open) {
@@ -64,7 +64,7 @@ const AddThread: React.FC<{ open: boolean, onClose: () => void, onSubmit: (threa
   return (
     <Modal onClose={onClose} open={open}>
       <ThreadForm onSubmit={submitHandler}>
-        <h3>Add a post</h3>
+        <h3>Add a Thread</h3>
         <TextField className={classes.textRoot} name="name" label="Name" variant="outlined" />
 
         <FormControlLabel

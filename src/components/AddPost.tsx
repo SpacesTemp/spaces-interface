@@ -3,11 +3,13 @@ import styled from 'styled-components';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/styles';
 
+import { PostInput } from '../App';
 import Modal from './Modal';
 
 const useStyles = makeStyles({
   textRoot: {
     width: '100%',
+    marginBottom: 10,
   },
   checkboxRoot: {
     width: '100%',
@@ -24,18 +26,6 @@ const PostForm = styled.form`
   flex-direction: column;
   padding: 24px;
 
-  input, textarea {
-    width: 100%;
-    border: 1px solid ${({ theme }) => theme.colors.borderGrey};
-    border-radius: 4px;
-    padding: 8px;
-    margin: 8px 0;
-  }
-
-  label {
-    margin: 16px 0 0;
-  }
-
   button {
     margin: 8px auto;
     border-radius: 8px;
@@ -45,14 +35,21 @@ const PostForm = styled.form`
   }
 `;
 
-const AddPost: React.FC<{ open: boolean, onClose: () => void }> = ({ open, onClose }) => {
+const AddPost: React.FC<{ open: boolean, onClose: () => void, onSubmit: (post: PostInput) => void }> = ({ open, onClose, onSubmit }) => {
   const classes = useStyles();
+
   if (!open) {
     return null;
   }
 
-  const submitHandler = () => {
+  const submitHandler = (event: any) => {
+    event.preventDefault();
+    const { title, content } = event.target;
 
+    onSubmit({
+      title: title.value,
+      content: content.value,
+    })
   }
 
   return (

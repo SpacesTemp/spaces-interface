@@ -11,7 +11,8 @@ import AddPost from './components/AddPost';
 import AddThread from './components/AddThread';
 import mockData from './mockData/threads.json';
 
-type Post = {
+export type Post = {
+  id: number,
   title?: string,
   content: string,
   user: string,
@@ -19,7 +20,20 @@ type Post = {
   replies: Array<number>
 }
 
+export type PostInput = {
+  title?: string,
+  content: string,
+}
+
 export type Thread = {
+  id: number,
+  name: string,
+  isPaid: boolean,
+  payAmount: number,
+  posts: Array<Post>,
+}
+
+export type ThreadInput = {
   name: string,
   isPaid: boolean,
   payAmount: number,
@@ -35,11 +49,6 @@ interface State {
   },
   nextAvailableId: number,
 }
-
-type Action =
-  | { type: 'SHOW_EDITOR', isReply: boolean, parentId?: number, threadId?: number }
-  | { type: 'HIDE_EDITOR' }
-  | { type: 'ADD_POST' };
 
 const Main = styled.main`
   display: flex;
@@ -91,13 +100,20 @@ const appReducer = (state: any, action: any) => {
     case 'ADD_POST':
       const { post } = action;
       const newThreads = [...state.threads];
-      const currentThread = newThreads[state.threadId - 1];
+      const threadId = state.editorMeta.threadId;
+
+      const currentThread = newThreads[threadId - 1];
+      console.log(currentThread);
       currentThread.posts.push({
         id: currentThread.nextPostId,
+        timestamp: Date.now(),
+        replies: [],
         ...post,
       });
 
-      currentThread.posts[state.parentId].replies.push(currentThread.nextPostId);
+      if (state.editorMeta.isReply) {
+        currentThread.posts[state.editorMeta.parentId - 1].replies.push(currentThread.nextPostId);
+      }
       currentThread.nextPostId++;
 
       return {
@@ -113,6 +129,7 @@ const appReducer = (state: any, action: any) => {
         "isPaid": action.isPaid,
         "payAmount": action.payAmount,
         "posts": [],
+        nextPostId: 1,
       });
 
       newState.nextThreadId++;
@@ -142,6 +159,9 @@ const App = () => {
   const [state, dispatch] = useReducer(appReducer, initialState);
 
   const openPostEditor = (isReply: boolean, parentId: number, threadId: number) => {
+    console.log(isReply,
+      parentId,
+      threadId);
     dispatch({
       type: 'SHOW_EDITOR',
       isReply,
@@ -156,13 +176,23 @@ const App = () => {
     });
   }
 
-  const addThread = (thread: Thread) => {
+  const addThread = (thread: ThreadInput) => {
     dispatch({
       type: 'ADD_THREAD',
       ...thread,
     });
     dispatch({
       type: 'HIDE_THREAD_EDITOR',
+    });
+  }
+
+  const addPost = (post: PostInput) => {
+    dispatch({
+      type: 'ADD_POST',
+      post,
+    });
+    dispatch({
+      type: 'HIDE_EDITOR',
     });
   }
 
@@ -178,7 +208,7 @@ const App = () => {
               <Route path="/thread/:id" component={Threads} />
             </Switch>
           </Main>
-          <AddPost open={state.showPostEditor} onClose={() => dispatch({ type: 'HIDE_EDITOR' })} />
+          <AddPost open={state.showPostEditor} onClose={() => dispatch({ type: 'HIDE_EDITOR' })} onSubmit={addPost} />
           {
             state.showThreadEditor && <AddThread open={state.showThreadEditor} onClose={() => dispatch({ type: 'HIDE_THREAD_EDITOR' })} onSubmit={addThread} />
           }
