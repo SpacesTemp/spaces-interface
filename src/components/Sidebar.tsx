@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
+
+import { DataContext } from '../App';
 
 const Main = styled.div`
   height: calc(100% - 40px);
@@ -17,12 +19,16 @@ const Channels = styled.ul`
     align-items: center;
     justify-content: space-between;
   }
+
+  h1 {
+    color: ${({ theme }) => theme.colors.primaryTextColor};
+  }
 `;
 
 const CustomLink = styled(Link)`
   text-decoration: none;
   margin: 5px 0;
-  color: ${({ theme }) => theme.colors.secondaryTextColor};
+  color: ${({ theme }) => theme.colors.primaryTextColor};
   font-weight: normal;
 
   &.current {
@@ -45,6 +51,15 @@ const UnreadCount = styled.div`
   font-size: 14px;
 `;
 
+const AddThread = styled.button`
+  width: 90%;
+  margin: 30px auto;
+  padding: 10px;
+  border: 1px solid ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.white};
+  background: none;
+`;
+
 const Sidebar: React.FC<{}> = () => {
   const location = useLocation();
   const links = [
@@ -58,17 +73,11 @@ const Sidebar: React.FC<{}> = () => {
       unreadMsgCount: 4,
     },
   ];
-  const threads = [
-    {
-      name: "Rules Thread",
-      link: "/thread/1",
-    },
-    {
-      name: "Paid Thread 1",
-      link: "/thread/2",
-      unreadMsgCount: 9,
-    },
-  ];
+  const { id: threadId } = useParams<{ id: any }>();
+  const dataContext = useContext(DataContext);
+  const threads = dataContext.data.threads;
+  const { openThreadEditor } = dataContext;
+
   return (
     <Main>
       <Channels>
@@ -91,23 +100,19 @@ const Sidebar: React.FC<{}> = () => {
           );
         })}
         <h1> Threads </h1>
-        {threads.map(({ name, link, unreadMsgCount }) => {
+        {threads.map(({ name, id, isPaid }) => {
           return (
-            <li key={link} className={location.pathname === link ? "current" : ""}>
+            <li key={id} className={threadId == id ? "current" : ""}>
               <CustomLink
-                to={link}
-                className={location.pathname === link ? "current" : ""}
+                to={`/thread/${id}`}
+                className={threadId == id ? "current" : ""}
               >
-                {name}
+                {name} {isPaid ? '🔥' : ''}
               </CustomLink>
-              {unreadMsgCount && unreadMsgCount > 0 && (
-                <UnreadCount>
-                  {unreadMsgCount > 10 ? "9+" : unreadMsgCount}
-                </UnreadCount>
-              )}
             </li>
           );
         })}
+        <AddThread onClick={() => openThreadEditor()}>+ Add a Thread</AddThread>
       </Channels>
     </Main>
   );
