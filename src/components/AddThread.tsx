@@ -37,7 +37,7 @@ const ThreadForm = styled.form`
   }
 `;
 
-const AddThread: React.FC<{ open: boolean, onClose: () => void, onSubmit: (thread: ThreadInput) => void }> = ({ open, onClose, onSubmit }) => {
+const AddThread: React.FC<{ open: boolean, communityPoints: number, subtractCommunityPoints: ( communityPoints:number )=>void ,onClose: () => void, onSubmit: (thread: ThreadInput) => void }> = ({ open, communityPoints ,onClose, onSubmit, subtractCommunityPoints }) => {
   const [showSlider, setShowSlider] = useState(false);
   const classes = useStyles();
   if (!open) {
@@ -53,6 +53,10 @@ const AddThread: React.FC<{ open: boolean, onClose: () => void, onSubmit: (threa
     event.preventDefault();
     const { target } = event;
     const { name, paid: isPaid, payAmount } = target as any;
+
+    if (isPaid){
+      subtractCommunityPoints(communityPoints - payAmount.value);
+    }
 
     onSubmit({
       name: (name as HTMLInputElement).value,
@@ -81,13 +85,13 @@ const AddThread: React.FC<{ open: boolean, onClose: () => void, onSubmit: (threa
         {
           showSlider &&
           < Slider
-            defaultValue={0.5}
+            defaultValue={5}
             aria-labelledby="Donation"
             valueLabelDisplay="on"
-            step={0.1}
+            step={1}
             marks
-            min={0.00}
-            max={2}
+            min={0}
+            max={10}
             name="payAmount"
             className={classes.sliderRoot}
           />

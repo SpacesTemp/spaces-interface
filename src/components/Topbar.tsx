@@ -98,7 +98,7 @@ function valuetext(value: any) {
 
 
 
-const Topbar: React.FC<{}> = () => {
+const Topbar: React.FC<{ communityPoints:number , addCommunityPoints: (communityPoints:number) => void }> = ({communityPoints,addCommunityPoints }) => {
 
   //eth state
   const [Addr, setAddr] = useState()
@@ -118,6 +118,8 @@ const Topbar: React.FC<{}> = () => {
   //slider
   const classesSlider = useStylesSlider();
   const [value, setValue] = React.useState(30);
+    //Community Token State
+    // const [communityPoints, setCommunityPoints] = useState(0)
 
 
   React.useEffect(() => {
@@ -132,9 +134,6 @@ const Topbar: React.FC<{}> = () => {
         } catch (e) {
           console.error('user refused to connect');
         }
-        // console.log('network:', provider.networkVersion);
-        // console.log('selectedAddress:', provider.selectedAddress);
-        // console.log('is metamask:', provider.isMetaMask);
       }
     }
     windowProvider();
@@ -175,7 +174,7 @@ const Topbar: React.FC<{}> = () => {
         </div>
       </p>
       <FundButton>
-        <button onClick={() => { sendDonation() }}> Submit! </button>
+        <button onClick={() => { sendDonation(); handleClose(); }}> Submit! </button>
       </FundButton>
     </div>
   );
@@ -227,7 +226,7 @@ const Topbar: React.FC<{}> = () => {
 
     const transactionHash = await provider.send('eth_sendTransaction', params)
     console.log('transactionHash is ' + transactionHash);
-
+    addCommunityPoints( communityPoints + value*10)
   }
 
   return (
@@ -236,6 +235,7 @@ const Topbar: React.FC<{}> = () => {
       <User>
         <span className="name">Jane Doe</span>
         <div className="online" />
+        <span className="name"> 💎 { communityPoints}</span>
       </User>
       <FundButton>
         <button onClick={() => { console.log("Test") }} >Fork Community</button>

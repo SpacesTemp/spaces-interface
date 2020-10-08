@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import styled, { ThemeProvider } from "styled-components";
 
@@ -73,6 +73,7 @@ const initialState = {
     threadId: null,
   },
   nextThreadId: mockData.nextThreadId,
+  communityPoints:0,
 };
 
 const appReducer = (state: any, action: any) => {
@@ -150,6 +151,20 @@ const appReducer = (state: any, action: any) => {
         showThreadEditor: false,
       };
     }
+    case 'ADD_COMMUNITY_POINTS': {
+      console.log(state.communityPoints)
+      return {
+        ...state,
+        communityPoints : state.communityPoints + action.communityPoints,
+      };
+    }
+    case 'SUBTRACT_COMMUNITY_POINTS': {
+      console.log(state.communityPoints)
+      return {
+        ...state,
+        communityPoints : state.communityPoints - action.communityPoints,
+      };
+    }
     default:
       return state;
   }
@@ -196,12 +211,24 @@ const App = () => {
     });
   }
 
+  const addCommunityPoints = (communityPoints: number) =>{
+    dispatch({
+      type:  'ADD_COMMUNITY_POINTS',
+      communityPoints,
+    });
+  }
+  const subtractCommunityPoints = (communityPoints: number) =>{
+    dispatch({
+      type:  'SUBTRACT_COMMUNITY_POINTS',
+      communityPoints,
+    });
+  }
   return (
     <DataContext.Provider value={{ data: state, openPostEditor, openThreadEditor }}>
       <ThemeProvider theme={theme}>
         <Router>
           <Main>
-            <Topbar />
+            <Topbar communityPoints={state.communityPoints} addCommunityPoints={addCommunityPoints} />
             <Sidebar />
             <Switch>
               <Route path="/channel/:id" component={Channel} />
@@ -210,7 +237,7 @@ const App = () => {
           </Main>
           <AddPost open={state.showPostEditor} onClose={() => dispatch({ type: 'HIDE_EDITOR' })} onSubmit={addPost} />
           {
-            state.showThreadEditor && <AddThread open={state.showThreadEditor} onClose={() => dispatch({ type: 'HIDE_THREAD_EDITOR' })} onSubmit={addThread} />
+            state.showThreadEditor && <AddThread open={state.showThreadEditor} onClose={() => dispatch({ type: 'HIDE_THREAD_EDITOR' })} onSubmit={addThread} communityPoints={state.communityPoints} subtractCommunityPoints={subtractCommunityPoints} />
           }
         </Router>
       </ThemeProvider>
