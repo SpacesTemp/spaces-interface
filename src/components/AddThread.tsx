@@ -54,7 +54,7 @@ const AddThread: React.FC<{ open: boolean, communityPoints: number, subtractComm
     const { target } = event;
     const { name, paid: isPaid, payAmount } = target as any;
 
-    if (isPaid){
+    if (isPaid && isPaid.checked){
       subtractCommunityPoints(communityPoints - payAmount.value);
     }
 
